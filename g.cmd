@@ -1,27 +1,42 @@
 @ECHO OFF
 SETLOCAL EnableDelayedExpansion
 SET _mode=long
-IF EXIST .git (
-	::FOR /F "tokens=1,2,3" %%A IN ('git remote -v') DO SET REMOTE=%%B
-	FOR %%O IN (%*) DO (
-		IF "%%O"=="-s" SET _mode=short
-	)
-	
-	:: Display a single line about the status
-	IF "!_mode!"=="short" (
-		git status --short --branch
-	)
-	
-	:: Display a full report
-	IF "!_mode!"=="long" (
-		git remote -v
-		@ECHO:
-		git branch
-		@ECHO:
-		git status
-	)
-	
-) ELSE (
-	@ECHO [31;1m Not a Git directory.
+FOR %%O IN (%*) DO (
+	IF "%%O"=="-s" SET _mode=short
 )
-:EXIT
+IF EXIST .git (
+	CALL :STATUS
+) ELSE (
+	FOR /f "delims=" %%a IN ('dir /ad /b') DO (
+		PUSHD "%%a"
+		IF EXIST .git CALL :SHORT
+		@ECHO:
+		POPD
+	)	
+)
+GOTO :EOF
+
+:: Display the status details.
+:STATUS
+IF "!_mode!"=="short" (	
+	CALL :SHORT
+)
+IF "!_mode!"=="long" (
+	CALL :LONG
+)
+GOTO :EOF
+
+:: Display a single line about the status
+:SHORT
+cd
+git status --short --branch
+GOTO :EOF
+
+:: Display a full report
+:LONG
+git remote -v
+@ECHO:
+git branch
+@ECHO:
+git status
+GOTO :EOF
