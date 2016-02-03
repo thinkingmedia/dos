@@ -1,10 +1,10 @@
 @ECHO OFF
 IF EXIST .git (
-git remote -v
-@ECHO:
-git branch
-@ECHO:
-git status
+	git remote -v
+	@ECHO:
+	git branch
+	@ECHO:
+	git status
 ) ELSE (
-@ECHO Not a Git directory.
+	@ECHO [31;1m Not a Git directory.
 )
