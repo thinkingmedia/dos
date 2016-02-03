@@ -2,7 +2,7 @@
 SETLOCAL EnableDelayedExpansion
 SET _mode=long
 IF EXIST .git (
-	FOR /F "tokens=1,2,3" %%A IN ('git remote -v') DO SET REMOTE=%%B
+	::FOR /F "tokens=1,2,3" %%A IN ('git remote -v') DO SET REMOTE=%%B
 	FOR %%O IN (%*) DO (
 		IF "%%O"=="-s" SET _mode=short
 	)
