@@ -2,9 +2,15 @@
 @ECHO OFF
 :: Show usage
 IF "%~1"=="" (
-	ECHO usage: tag [-d] ^<version^> ["message"]
+	ECHO usage: tag [-d] [-l] ^<version^> ["message"]
 	ECHO:
 	ECHO -d    Will delete a tag on the origin
+	ECHO -l    Will list all tags
+	GOTO :EOF
+)
+:: List all tags
+IF "%~1"=="-l" (
+	git tag -n
 	GOTO :EOF
 )
 :: Delete a tag
